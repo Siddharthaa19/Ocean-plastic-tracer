@@ -14,7 +14,6 @@ import { CleanupPriorityPage } from './pages/CleanupPriority';
 import { HistoricalReplayPage } from './pages/HistoricalReplay';
 import { SatelliteScenesPage } from './pages/SatelliteScenes';
 import { ModelConfidencePage } from './pages/ModelConfidence';
-import { DataSourcesPage } from './pages/DataSources';
 import { SettingsPage } from './pages/Settings';
 
 import { NavigationId } from './types';
@@ -59,8 +58,6 @@ export function App() {
       case 'ocean-conditions':
       case 'model-confidence':
         return <ModelConfidencePage />;
-      case 'data-sources':
-        return <DataSourcesPage />;
       case 'settings':
         return <SettingsPage />;
       default:

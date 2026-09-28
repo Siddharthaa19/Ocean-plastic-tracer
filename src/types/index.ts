@@ -8,7 +8,6 @@ export type NavigationId =
   | 'satellite-scenes'
   | 'ocean-conditions'
   | 'model-confidence'
-  | 'data-sources'
   | 'historical'
   | 'settings'
   | 'landing';

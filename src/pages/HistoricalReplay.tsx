@@ -75,7 +75,7 @@ export const HistoricalReplayPage: React.FC = () => {
 
           <div className="space-y-3 text-xs text-slate-600">
             <p>
-              During this phase, DRIFT-LENS processed Sentinel-2 multispectral passes over the Arabian Sea, identifying candidate floating slicks with a detection confidence score of 89%.
+              During this phase, Aquatrace processed Sentinel-2 multispectral passes over the Arabian Sea, identifying candidate floating slicks with a detection confidence score of 89%.
             </p>
             <div className="p-3 rounded-xl bg-[#EAF8FA] border border-[#24C6C5]/30">
               <span className="font-bold text-[#0878D1] block mb-1">Forecast Verification:</span>

@@ -3,11 +3,6 @@ import {
   Search,
   Bot,
   Bell,
-  Clock,
-  Radio,
-  Wind,
-  Waves,
-  Navigation,
 } from 'lucide-react';
 
 interface TopHeaderProps {
@@ -23,45 +18,6 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
 }) => {
   return (
     <header className="h-[58px] bg-white border-b border-slate-200/80 px-5 flex items-center justify-between sticky top-0 z-20 shadow-xs select-none">
-      {/* LEFT: Live Satellite Feed & Ocean Conditions Ticker */}
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#EAF8FA] border border-[#24C6C5]/30 text-[#071A33]">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#18B77A] opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#18B77A]"></span>
-          </span>
-          <span className="text-[11px] font-bold text-[#071A33] tracking-wider uppercase">LIVE</span>
-          <span className="text-slate-300">|</span>
-          <span className="text-[11px] font-semibold text-slate-700 flex items-center gap-1">
-            <Radio className="w-3 h-3 text-[#0878D1]" />
-            Satellite Feed
-          </span>
-        </div>
-
-        <div className="hidden xl:flex items-center gap-3 text-[11px] text-slate-600 border-l border-slate-200 pl-4">
-          <div className="flex items-center gap-1.5 font-medium">
-            <Navigation className="w-3.5 h-3.5 text-[#0878D1]" />
-            <span className="text-slate-400 uppercase text-[10px] font-bold tracking-wider">CURRENT</span>
-            <span className="font-bold text-slate-800">1.4 kn → SE</span>
-          </div>
-
-          <span className="text-slate-300">•</span>
-
-          <div className="flex items-center gap-1.5 font-medium">
-            <Wind className="w-3.5 h-3.5 text-[#168BE8]" />
-            <span className="text-slate-400 uppercase text-[10px] font-bold tracking-wider">WIND</span>
-            <span className="font-bold text-slate-800">18 km/h → NE</span>
-          </div>
-
-          <span className="text-slate-300">•</span>
-
-          <div className="flex items-center gap-1.5 font-medium">
-            <Waves className="w-3.5 h-3.5 text-[#24C6C5]" />
-            <span className="text-slate-400 uppercase text-[10px] font-bold tracking-wider">WAVE</span>
-            <span className="font-bold text-slate-800">1.2 m</span>
-          </div>
-        </div>
-      </div>
 
       {/* CENTER: Global Search Bar */}
       <div className="flex-1 max-w-md mx-6">
@@ -79,13 +35,8 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
         </button>
       </div>
 
-      {/* RIGHT: Status, Assistant, Notifications & User */}
+      {/* RIGHT: Assistant, Notifications & User */}
       <div className="flex items-center gap-3">
-        <div className="hidden lg:flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
-          <Clock className="w-3.5 h-3.5 text-slate-400" />
-          <span>Updated 2 min ago</span>
-        </div>
-
         {/* Assistant CTA Button */}
         <button
           onClick={onOpenAIAssistant}

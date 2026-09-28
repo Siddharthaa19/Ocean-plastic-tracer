@@ -9,7 +9,6 @@ import {
   Layers,
   Activity,
   History,
-  Database,
   Settings,
   Sparkles,
   ExternalLink,
@@ -41,7 +40,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentNav, onNavigate, onOpen
   ];
 
   const systemItems = [
-    { id: 'data-sources' as NavigationId, label: 'Data Sources', icon: Database },
     { id: 'settings' as NavigationId, label: 'Settings', icon: Settings },
   ];
 
@@ -88,7 +86,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentNav, onNavigate, onOpen
             </div>
             <div>
               <div className="text-sm font-extrabold tracking-tight text-white leading-none">
-                DRIFT-LENS
+                Aquatrace
               </div>
               <div className="text-[10px] text-[#24C6C5] font-medium tracking-wide mt-1">
                 Marine Debris Intelligence
@@ -117,13 +115,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentNav, onNavigate, onOpen
           <ExternalLink className="w-3 h-3 text-slate-400" />
         </button>
 
-        {/* System operational status pill */}
-        <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-[#18B77A]/15 border border-[#18B77A]/30 mb-3">
-          <span className="w-2 h-2 rounded-full bg-[#18B77A] animate-ping shrink-0" />
-          <span className="text-[10px] font-semibold text-[#18B77A] tracking-wide">
-            Data feeds active
-          </span>
-        </div>
 
         {/* User / Org card */}
         <div className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer">

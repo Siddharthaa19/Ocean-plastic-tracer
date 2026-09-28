@@ -13,7 +13,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({ isOpen, on
   const [messages, setMessages] = useState<Array<{ sender: 'ai' | 'user'; text: string }>>([
     {
       sender: 'ai',
-      text: 'Hello! I am your DRIFT-LENS Marine Intelligence Assistant. Ask me about satellite debris detections, ocean current drift predictions, or field verification targets.',
+      text: 'Hello! I am your Aquatrace Marine Intelligence Assistant. Ask me about satellite debris detections, ocean current drift predictions, or field verification targets.',
     },
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -51,7 +51,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({ isOpen, on
               <Bot className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-sm font-bold text-white leading-none">DRIFT-LENS Assistant</div>
+              <div className="text-sm font-bold text-white leading-none">Aquatrace Assistant</div>
               <div className="text-[10px] text-[#24C6C5] font-semibold mt-1">
                 Copernicus & GFS Integration
               </div>

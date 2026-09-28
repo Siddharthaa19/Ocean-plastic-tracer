@@ -28,7 +28,7 @@ export const LandingPage: React.FC<LandingProps> = ({ onEnterApp }) => {
             <Compass className="w-6 h-6 text-white animate-pulse" />
           </div>
           <div>
-            <div className="text-lg font-black tracking-tight text-white leading-none">DRIFT-LENS</div>
+            <div className="text-lg font-black tracking-tight text-white leading-none">Aquatrace</div>
             <div className="text-[10px] font-bold text-[#24C6C5] tracking-widest uppercase mt-1">
               Marine Intelligence
             </div>
@@ -241,7 +241,7 @@ export const LandingPage: React.FC<LandingProps> = ({ onEnterApp }) => {
 
       {/* FOOTER */}
       <footer className="py-8 bg-[#031024] border-t border-white/10 text-center text-xs text-slate-400">
-        DRIFT-LENS Marine Decision Intelligence Platform © 2026. Built for ocean researchers, coast guards & response teams.
+        Aquatrace Marine Decision Intelligence Platform © 2026. Built for ocean researchers, coast guards & response teams.
       </footer>
     </div>
   );
