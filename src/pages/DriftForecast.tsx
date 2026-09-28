@@ -34,7 +34,7 @@ export const DriftForecastPage: React.FC = () => {
 
   // Auto-play time simulation cycle
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setInterval>;
     if (isPlaying) {
       const steps: TimelineStep[] = ['NOW', '24H', '48H', '72H'];
       timer = setInterval(() => {
@@ -57,14 +57,14 @@ export const DriftForecastPage: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <span className="px-2.5 py-0.5 rounded-md bg-cyan-500/10 text-cyan-600 border border-cyan-500/30 text-[11px] font-black uppercase tracking-wider">
-              Hydrodynamic Vector Simulation
+              Ocean Debris Movement
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-[#071A33] tracking-tight uppercase mt-1">
-            Trajectory & Drift Path Simulator
+            Debris Drift Forecast
           </h1>
           <p className="text-sm text-slate-500 font-normal mt-0.5">
-            Track continuous open-ocean trajectory vectors powered by ocean current vectors and surface wind drift.
+            Track expected ocean plastic movement powered by surface currents and wind.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export const DriftForecastPage: React.FC = () => {
           }`}
         >
           {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
-          <span>{isPlaying ? 'PAUSE SIMULATION' : 'PLAY SIMULATION'}</span>
+          <span>{isPlaying ? 'PAUSE FORECAST' : 'PLAY FORECAST'}</span>
         </button>
       </div>
 
@@ -91,12 +91,12 @@ export const DriftForecastPage: React.FC = () => {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold text-cyan-300 uppercase tracking-wider">
-                TRAJECTORY VECTOR
+                PLANNED MOVEMENT
               </span>
               <span className="text-slate-400">•</span>
               <span className="text-xs text-slate-300 font-medium">Bearing: 55° NE</span>
             </div>
-            <h2 className="text-lg font-black text-white">{activeData.displacementKm} km Total Displacement</h2>
+            <h2 className="text-lg font-black text-white">{activeData.displacementKm} km Estimated Distance</h2>
           </div>
         </div>
 
@@ -107,17 +107,17 @@ export const DriftForecastPage: React.FC = () => {
           </div>
 
           <div className="px-3 py-1.5 rounded-xl bg-white/10 border border-white/15">
-            <span className="text-slate-400 block text-[9px] uppercase font-bold">WIND VECTOR</span>
+            <span className="text-slate-400 block text-[9px] uppercase font-bold">WIND DRIFT</span>
             <span className="font-extrabold text-white">{activeData.windSpeedKmh} km/h → NE</span>
           </div>
 
           <div className="px-3 py-1.5 rounded-xl bg-white/10 border border-white/15">
-            <span className="text-slate-400 block text-[9px] uppercase font-bold">UNCERTAINTY RADIUS</span>
+            <span className="text-slate-400 block text-[9px] uppercase font-bold">MARGIN OF ERROR</span>
             <span className="font-extrabold text-slate-200">±{activeData.uncertaintyRadiusKm} km</span>
           </div>
 
           <span className="px-3 py-1.5 rounded-xl bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 text-xs font-black uppercase">
-            82% Vector Confidence
+            82% Forecast Accuracy
           </span>
         </div>
       </div>
@@ -131,10 +131,10 @@ export const DriftForecastPage: React.FC = () => {
               <div className="flex items-center gap-2">
                 <Compass className="w-4 h-4 text-[#0878D1]" />
                 <span className="font-black text-[#071A33] uppercase">
-                  DRIFT VECTOR TRAJECTORY MAP
+                  DEBRIS MOVEMENT MAP
                 </span>
               </div>
-              <span className="text-[#0878D1] font-bold">Active Horizon: {currentStep}</span>
+              <span className="text-[#0878D1] font-bold">Forecast Horizon: {currentStep}</span>
             </div>
 
             <MapView layers={layers} currentStep={currentStep} className="h-[480px]" />
@@ -157,7 +157,7 @@ export const DriftForecastPage: React.FC = () => {
             <div className="flex items-center justify-between pb-2 border-b border-slate-100">
               <h3 className="text-xs font-black text-[#071A33] uppercase flex items-center gap-2">
                 <Activity className="w-4 h-4 text-[#0878D1]" />
-                HYDRODYNAMIC VECTOR GAUGES ({currentStep})
+                OCEAN & WIND CONDITIONS ({currentStep})
               </h3>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-100 text-cyan-800">
                 Live Model
@@ -169,7 +169,7 @@ export const DriftForecastPage: React.FC = () => {
               <div className="p-3 rounded-xl bg-[#F5F9FC] border border-slate-200/70 space-y-1">
                 <div className="flex items-center gap-1.5 text-slate-500 font-extrabold uppercase text-[10px]">
                   <Navigation className="w-3.5 h-3.5 text-[#0878D1]" />
-                  <span>Current Velocity</span>
+                  <span>Ocean Current Speed</span>
                 </div>
                 <div className="text-lg font-black text-[#071A33]">
                   {activeData.currentSpeedKnots} knots
@@ -181,7 +181,7 @@ export const DriftForecastPage: React.FC = () => {
               <div className="p-3 rounded-xl bg-[#F5F9FC] border border-slate-200/70 space-y-1">
                 <div className="flex items-center gap-1.5 text-slate-500 font-extrabold uppercase text-[10px]">
                   <Wind className="w-3.5 h-3.5 text-[#168BE8]" />
-                  <span>Surface Wind</span>
+                  <span>Surface Wind Speed</span>
                 </div>
                 <div className="text-lg font-black text-[#071A33]">
                   {activeData.windSpeedKmh} km/h
@@ -193,7 +193,7 @@ export const DriftForecastPage: React.FC = () => {
               <div className="p-3 rounded-xl bg-[#F5F9FC] border border-slate-200/70 space-y-1">
                 <div className="flex items-center gap-1.5 text-slate-500 font-extrabold uppercase text-[10px]">
                   <Waves className="w-3.5 h-3.5 text-[#24C6C5]" />
-                  <span>Stokes Drift</span>
+                  <span>Wave Drift Effect</span>
                 </div>
                 <div className="text-lg font-black text-[#071A33]">0.4 knots</div>
                 <div className="text-[10px] text-slate-500 font-semibold">Wave Height: 1.2 m</div>

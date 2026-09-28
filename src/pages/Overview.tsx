@@ -135,36 +135,6 @@ export const OverviewPage: React.FC<OverviewProps> = ({ onNavigate }) => {
               Clear 5-second overview: Detection point 🔴 → Drift trajectory 🔵 → Coastal Hotspots 🟠 → Best Place to Check 🟢
             </p>
           </div>
-
-          {/* Executive Quick Focus Controls */}
-          <div className="flex items-center gap-2 text-xs font-bold">
-            <button
-              onClick={() => setTimelineStep('NOW')}
-              className={`px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
-                timelineStep === 'NOW'
-                  ? 'bg-red-600 text-white border-red-600 shadow-sm'
-                  : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-              }`}
-            >
-              🔴 Debris Start
-            </button>
-            <button
-              onClick={() => setTimelineStep('48H')}
-              className={`px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
-                timelineStep === '48H'
-                  ? 'bg-[#0878D1] text-white border-[#0878D1] shadow-sm'
-                  : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-              }`}
-            >
-              🔵 48H Drift
-            </button>
-            <button
-              onClick={() => onNavigate('verification')}
-              className="px-3 py-1.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 border border-emerald-600 shadow-sm cursor-pointer"
-            >
-              🟢 Verification Pin
-            </button>
-          </div>
         </div>
 
         {/* Large Visually Dominant Map Canvas with Executive Legend Overlay */}

@@ -33,12 +33,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentNav, onNavigate, onOpen
     { id: 'cleanup' as NavigationId, label: 'Cleanup Priority', icon: ListOrdered },
   ];
 
-  const dataItems = [
-    { id: 'satellite-scenes' as NavigationId, label: 'Satellite Scenes', icon: Layers },
-    { id: 'ocean-conditions' as NavigationId, label: 'Ocean Conditions', icon: Activity },
-    { id: 'historical' as NavigationId, label: 'Historical Replay', icon: History },
-  ];
-
   const systemItems = [
     { id: 'settings' as NavigationId, label: 'Settings', icon: Settings },
   ];
@@ -51,8 +45,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentNav, onNavigate, onOpen
       <div className="space-y-1">
         {items.map((item) => {
           const Icon = item.icon;
-          const isActive =
-            currentNav === item.id || (item.id === 'ocean-conditions' && currentNav === 'model-confidence');
+          const isActive = currentNav === item.id;
           return (
             <button
               key={item.id}
@@ -96,9 +89,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentNav, onNavigate, onOpen
         </div>
 
         {/* Navigation Sections */}
-        {renderNavGroup('DECISION', decisionItems)}
-        {renderNavGroup('DATA', dataItems)}
-        {renderNavGroup('SYSTEM', systemItems)}
+        {renderNavGroup('NAVIGATION', decisionItems)}
       </div>
 
       {/* Footer System Status & User Profile */}

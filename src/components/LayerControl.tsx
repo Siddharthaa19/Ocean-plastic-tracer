@@ -112,7 +112,7 @@ export const LayerControl: React.FC<LayerControlProps> = ({
             {layerItems.map((item) => {
               const isChecked = layers[item.key];
               return (
-                <label
+                <div
                   key={item.key}
                   onClick={() => onToggleLayer(item.key)}
                   className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors ${
@@ -129,10 +129,10 @@ export const LayerControl: React.FC<LayerControlProps> = ({
                   <input
                     type="checkbox"
                     checked={isChecked}
-                    onChange={() => {}}
-                    className="w-3.5 h-3.5 rounded text-[#00E5FF] accent-[#00E5FF] focus:ring-0 cursor-pointer"
+                    readOnly
+                    className="w-3.5 h-3.5 rounded text-[#00E5FF] accent-[#00E5FF] focus:ring-0 cursor-pointer pointer-events-none"
                   />
-                </label>
+                </div>
               );
             })}
           </div>

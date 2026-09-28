@@ -45,7 +45,7 @@ export const DriftTimeline: React.FC<DriftTimelineProps> = ({ currentStep, onSel
               </span>
             </div>
             <div className="text-[10px] text-slate-500 font-semibold">
-              Lagrangian Drift Model · CMEMS Ocean Currents + GFS Wind
+              Predicted Debris Movement · Ocean Current & Wind Model
             </div>
           </div>
         </div>

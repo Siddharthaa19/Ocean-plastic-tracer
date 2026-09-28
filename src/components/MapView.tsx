@@ -14,6 +14,8 @@ interface MapViewProps {
   selectedHotspotId?: string;
   onNavigate?: (id: NavigationId) => void;
   className?: string;
+  showIncidentOnly?: boolean;
+  showSatelliteOverlay?: boolean;
 }
 
 export const MapView: React.FC<MapViewProps> = ({
@@ -24,6 +26,8 @@ export const MapView: React.FC<MapViewProps> = ({
   selectedHotspotId,
   onNavigate,
   className = 'h-[550px]',
+  showIncidentOnly = false,
+  showSatelliteOverlay = false,
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -291,6 +295,218 @@ export const MapView: React.FC<MapViewProps> = ({
       });
     }
 
+    // --- 4. OCEAN CURRENTS VECTOR STREAMLINES (CMEMS Data) ---
+    const oceanCurrentsGeoJSON: FeatureCollection = {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          properties: { name: 'Coastal Current Streamline 1' },
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [75.3, 9.4],
+              [75.55, 9.65],
+              [75.8, 9.9],
+              [76.05, 10.15],
+              [76.3, 10.4],
+            ],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: { name: 'Offshore Surface Current Streamline 2' },
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [75.15, 9.6],
+              [75.4, 9.85],
+              [75.65, 10.1],
+              [75.9, 10.35],
+              [76.15, 10.6],
+            ],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: { name: 'Shelf Jet Streamline 3' },
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [75.45, 9.25],
+              [75.7, 9.5],
+              [75.95, 9.75],
+              [76.2, 10.0],
+              [76.45, 10.25],
+            ],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: { name: 'Outer Shelf Vector Streamline 4' },
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [75.0, 9.85],
+              [75.25, 10.1],
+              [75.5, 10.35],
+              [75.75, 10.6],
+            ],
+          },
+        },
+      ],
+    };
+
+    if (!map.getSource('ocean-currents-src')) {
+      map.addSource('ocean-currents-src', { type: 'geojson', data: oceanCurrentsGeoJSON });
+
+      map.addLayer({
+        id: 'ocean-currents-line-bg',
+        type: 'line',
+        source: 'ocean-currents-src',
+        paint: {
+          'line-color': '#24C6C5',
+          'line-width': 6,
+          'line-opacity': 0.25,
+        },
+      });
+
+      map.addLayer({
+        id: 'ocean-currents-line-main',
+        type: 'line',
+        source: 'ocean-currents-src',
+        paint: {
+          'line-color': '#24C6C5',
+          'line-width': 2.5,
+          'line-dasharray': [4, 3],
+          'line-opacity': 0.9,
+        },
+      });
+    }
+
+    // --- 5. WIND VECTOR STREAMLINES (GFS Atmospheric Data) ---
+    const windVectorGeoJSON: FeatureCollection = {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          properties: { name: 'Surface Wind Streamline 1' },
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [75.2, 9.3],
+              [75.52, 9.62],
+              [75.85, 9.95],
+              [76.18, 10.28],
+              [76.5, 10.6],
+            ],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: { name: 'Surface Wind Streamline 2' },
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [75.35, 9.15],
+              [75.68, 9.48],
+              [76.01, 9.81],
+              [76.34, 10.14],
+              [76.67, 10.47],
+            ],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: { name: 'Coastal Wind Drift Streamline 3' },
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [75.05, 9.75],
+              [75.38, 10.08],
+              [75.71, 10.41],
+              [76.04, 10.74],
+            ],
+          },
+        },
+      ],
+    };
+
+    if (!map.getSource('wind-vector-src')) {
+      map.addSource('wind-vector-src', { type: 'geojson', data: windVectorGeoJSON });
+
+      map.addLayer({
+        id: 'wind-vector-line-bg',
+        type: 'line',
+        source: 'wind-vector-src',
+        paint: {
+          'line-color': '#A855F7',
+          'line-width': 5,
+          'line-opacity': 0.25,
+        },
+      });
+
+      map.addLayer({
+        id: 'wind-vector-line-main',
+        type: 'line',
+        source: 'wind-vector-src',
+        paint: {
+          'line-color': '#A855F7',
+          'line-width': 2.2,
+          'line-dasharray': [6, 4],
+          'line-opacity': 0.9,
+        },
+      });
+    }
+
+    // --- 6. SATELLITE SCENE BOUNDARY OVERLAY ---
+    const satelliteGeoJSON: FeatureCollection = {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          properties: { name: 'Sentinel-2 Satellite Scene' },
+          geometry: {
+            type: 'Polygon',
+            coordinates: [
+              [
+                [75.3, 9.4],
+                [76.25, 9.4],
+                [76.25, 10.35],
+                [75.3, 10.35],
+                [75.3, 9.4],
+              ],
+            ],
+          },
+        },
+      ],
+    };
+
+    if (!map.getSource('satellite-scene-src')) {
+      map.addSource('satellite-scene-src', { type: 'geojson', data: satelliteGeoJSON });
+
+      map.addLayer({
+        id: 'satellite-scene-fill',
+        type: 'fill',
+        source: 'satellite-scene-src',
+        paint: {
+          'fill-color': '#00E5FF',
+          'fill-opacity': 0.15,
+        },
+      });
+
+      map.addLayer({
+        id: 'satellite-scene-outline',
+        type: 'line',
+        source: 'satellite-scene-src',
+        paint: {
+          'line-color': '#00E5FF',
+          'line-width': 2,
+          'line-dasharray': [4, 4],
+        },
+      });
+    }
+
     updateLayerVisibility();
   };
 
@@ -300,10 +516,31 @@ export const MapView: React.FC<MapViewProps> = ({
 
     clearMarkers();
 
+    // Toggle Satellite Overlay
+    ['satellite-scene-fill', 'satellite-scene-outline'].forEach((id) => {
+      if (map.getLayer(id)) {
+        map.setLayoutProperty(id, 'visibility', showSatelliteOverlay ? 'visible' : 'none');
+      }
+    });
+
     // Toggle Debris Layer
     ['conc-high-layer', 'conc-high-stroke'].forEach((id) => {
       if (map.getLayer(id)) {
         map.setLayoutProperty(id, 'visibility', layers.aiDetection ? 'visible' : 'none');
+      }
+    });
+
+    // Toggle Ocean Currents Layer
+    ['ocean-currents-line-bg', 'ocean-currents-line-main'].forEach((id) => {
+      if (map.getLayer(id)) {
+        map.setLayoutProperty(id, 'visibility', layers.oceanCurrents ? 'visible' : 'none');
+      }
+    });
+
+    // Toggle Wind Vector Layer
+    ['wind-vector-line-bg', 'wind-vector-line-main'].forEach((id) => {
+      if (map.getLayer(id)) {
+        map.setLayoutProperty(id, 'visibility', layers.wind ? 'visible' : 'none');
       }
     });
 
@@ -346,6 +583,60 @@ export const MapView: React.FC<MapViewProps> = ({
         map.setLayoutProperty(id, 'visibility', layers.predictedDrift ? 'visible' : 'none');
       }
     });
+
+    // --- STAGE 01: INCIDENT MARKER ONLY ---
+    if (showIncidentOnly) {
+      const incidentEl = document.createElement('div');
+      incidentEl.className = 'select-none cursor-pointer';
+      incidentEl.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px; background: #071A33; border: 2px solid #00E5FF; border-radius: 20px; padding: 6px 14px; color: white; box-shadow: 0 0 20px rgba(0,229,255,0.6); font-weight: 900; font-size: 11px; white-space: nowrap;">
+          <span style="font-size: 14px;">🚢</span>
+          <span>MSC ELSA 3 · INCIDENT LOCATION</span>
+        </div>
+      `;
+
+      const popup = new maplibregl.Popup({ offset: 12, maxWidth: '240px' }).setHTML(`
+        <div style="padding: 6px; color: #071A33;">
+          <div style="font-size: 10px; font-weight: 900; color: #0878D1; text-transform: uppercase;">HISTORICAL MARINE INCIDENT</div>
+          <div style="font-size: 13px; font-weight: 900; color: #071A33; margin-top: 2px;">MSC ELSA 3</div>
+          <div style="font-size: 11px; color: #475569; margin-top: 4px;">Location: <strong>Arabian Sea · Kerala Coast</strong></div>
+          <div style="font-size: 10px; color: #64748B; margin-top: 2px;">Event Date: 12 May 2025</div>
+        </div>
+      `);
+
+      const incidentMarker = new maplibregl.Marker({ element: incidentEl })
+        .setLngLat([75.8, 9.85])
+        .setPopup(popup)
+        .addTo(map);
+
+      markersRef.current.push(incidentMarker);
+    }
+
+    // --- STAGE 02: SATELLITE PASS MARKER ---
+    if (showSatelliteOverlay) {
+      const satEl = document.createElement('div');
+      satEl.className = 'select-none cursor-pointer';
+      satEl.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 6px; background: rgba(15, 23, 42, 0.95); border: 1.5px solid #00E5FF; border-radius: 16px; padding: 4px 12px; color: #00E5FF; font-size: 11px; font-weight: 900; box-shadow: 0 4px 14px rgba(0,229,255,0.4);">
+          <span>📡 SENTINEL-2 A/B SATELLITE PASS (10m Res)</span>
+        </div>
+      `;
+
+      const popup = new maplibregl.Popup({ offset: 12, maxWidth: '220px' }).setHTML(`
+        <div style="padding: 6px; color: #071A33;">
+          <div style="font-size: 10px; font-weight: 900; color: #00E5FF; text-transform: uppercase;">SATELLITE OBSERVATION</div>
+          <div style="font-size: 12px; font-weight: 800; color: #071A33; margin-top: 2px;">Sentinel-2 Multispectral Scene</div>
+          <div style="font-size: 10px; color: #475569; margin-top: 4px;">Pass Time: 13 May 2025 · 10:30 UTC</div>
+        </div>
+      `);
+
+      const satMarker = new maplibregl.Marker({ element: satEl })
+        .setLngLat([75.8, 10.25])
+        .setPopup(popup)
+        .addTo(map);
+
+      markersRef.current.push(satMarker);
+    }
 
     // --- 1. STARTING POSITION DEBRIS MARKER ---
     if (layers.aiDetection) {
@@ -502,6 +793,86 @@ export const MapView: React.FC<MapViewProps> = ({
 
         const marker = new maplibregl.Marker({ element: verEl })
           .setLngLat([cand.lng, cand.lat])
+          .setPopup(popup)
+          .addTo(map);
+
+        markersRef.current.push(marker);
+      });
+    }
+
+    // --- 5. OCEAN CURRENTS MARKERS LAYER (CMEMS Surface Flow Grid) ---
+    if (layers.oceanCurrents) {
+      const oceanCurrentNodes = [
+        { name: 'CMEMS Station Alpha (Kerala Shelf)', lng: 75.55, lat: 9.65, speed: '0.52 m/s', dir: '45° NE', temp: '29.1°C', depth: '0.5m Surface' },
+        { name: 'CMEMS Station Beta (Offshore Drift)', lng: 75.8, lat: 9.9, speed: '0.48 m/s', dir: '48° NE', temp: '29.3°C', depth: '0.5m Surface' },
+        { name: 'CMEMS Station Gamma (Kochi Jet)', lng: 76.05, lat: 10.15, speed: '0.55 m/s', dir: '42° NE', temp: '28.9°C', depth: '0.5m Surface' },
+        { name: 'CMEMS Station Delta (Malabar Front)', lng: 75.4, lat: 9.85, speed: '0.45 m/s', dir: '50° NE', temp: '29.0°C', depth: '0.5m Surface' },
+      ];
+
+      oceanCurrentNodes.forEach((node) => {
+        const nodeEl = document.createElement('div');
+        nodeEl.className = 'select-none cursor-pointer';
+        nodeEl.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 5px; background: rgba(15, 23, 42, 0.92); border: 1.5px solid #24C6C5; border-radius: 12px; padding: 3px 8px; color: #24C6C5; font-size: 10px; font-weight: 800; box-shadow: 0 4px 12px rgba(36, 198, 197, 0.4); backdrop-filter: blur(4px);">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#24C6C5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(45deg); shrink: 0;">
+              <line x1="12" y1="19" x2="12" y2="5"></line>
+              <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
+            <span>🌊 ${node.speed} (${node.dir})</span>
+          </div>
+        `;
+
+        const popup = new maplibregl.Popup({ offset: 10, maxWidth: '220px' }).setHTML(`
+          <div style="padding: 6px; color: #071A33;">
+            <div style="font-size: 10px; font-weight: 900; color: #24C6C5; text-transform: uppercase;">CMEMS OCEAN SURFACE CURRENT</div>
+            <div style="font-size: 12px; font-weight: 900; color: #071A33; margin-top: 2px;">${node.name}</div>
+            <div style="font-size: 11px; color: #334155; margin-top: 4px;">Velocity: <strong>${node.speed}</strong> | Direction: <strong>${node.dir}</strong></div>
+            <div style="font-size: 10px; color: #64748B; margin-top: 2px;">SST: ${node.temp} · Depth: ${node.depth}</div>
+          </div>
+        `);
+
+        const marker = new maplibregl.Marker({ element: nodeEl })
+          .setLngLat([node.lng, node.lat])
+          .setPopup(popup)
+          .addTo(map);
+
+        markersRef.current.push(marker);
+      });
+    }
+
+    // --- 6. WIND VECTOR MARKERS LAYER (GFS Atmosphere Surface Drift) ---
+    if (layers.wind) {
+      const windNodes = [
+        { name: 'GFS Wind Grid 01 (South Arabian Sea)', lng: 75.35, lat: 9.45, speed: '18 km/h', dir: '45° NE', gusts: '24 km/h', driftCoeff: '2.8%' },
+        { name: 'GFS Wind Grid 02 (Offshore Kerala)', lng: 75.7, lat: 9.75, speed: '21 km/h', dir: '50° NE', gusts: '27 km/h', driftCoeff: '3.0%' },
+        { name: 'GFS Wind Grid 03 (Central Channel)', lng: 76.0, lat: 10.05, speed: '19 km/h', dir: '48° NE', gusts: '25 km/h', driftCoeff: '2.9%' },
+        { name: 'GFS Wind Grid 04 (North Coastal Vector)', lng: 76.35, lat: 10.35, speed: '23 km/h', dir: '52° NE', gusts: '30 km/h', driftCoeff: '3.1%' },
+      ];
+
+      windNodes.forEach((node) => {
+        const windEl = document.createElement('div');
+        windEl.className = 'select-none cursor-pointer';
+        windEl.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 5px; background: rgba(15, 23, 42, 0.92); border: 1.5px solid #A855F7; border-radius: 12px; padding: 3px 8px; color: #C084FC; font-size: 10px; font-weight: 800; box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4); backdrop-filter: blur(4px);">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C084FC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(50deg); shrink: 0;">
+              <line x1="12" y1="19" x2="12" y2="5"></line>
+              <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
+            <span>💨 ${node.speed} (${node.dir})</span>
+          </div>
+        `;
+
+        const popup = new maplibregl.Popup({ offset: 10, maxWidth: '220px' }).setHTML(`
+          <div style="padding: 6px; color: #071A33;">
+            <div style="font-size: 10px; font-weight: 900; color: #A855F7; text-transform: uppercase;">GFS WIND VECTOR DRIFT</div>
+            <div style="font-size: 12px; font-weight: 900; color: #071A33; margin-top: 2px;">${node.name}</div>
+            <div style="font-size: 11px; color: #334155; margin-top: 4px;">Speed: <strong>${node.speed}</strong> | Gusts: <strong>${node.gusts}</strong></div>
+            <div style="font-size: 10px; color: #64748B; margin-top: 2px;">Bearing: ${node.dir} · Windage factor: ${node.driftCoeff}</div>
+          </div>
+        `);
+
+        const marker = new maplibregl.Marker({ element: windEl })
+          .setLngLat([node.lng, node.lat])
           .setPopup(popup)
           .addTo(map);
 

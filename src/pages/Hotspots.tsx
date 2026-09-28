@@ -26,14 +26,14 @@ export const HotspotsPage: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <span className="px-2.5 py-0.5 rounded-md bg-amber-500/10 text-amber-600 border border-amber-500/30 text-[11px] font-black uppercase tracking-wider">
-              Coastal Trap Assessment
+              High Risk Accumulation
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-[#071A33] tracking-tight uppercase mt-1">
-            Coastal Accumulation & Intercept Zones
+            Debris Accumulation Hotspots
           </h1>
           <p className="text-sm text-slate-500 font-normal mt-0.5">
-            Identify coastal trap points where floating debris will bottleneck, and prepare cleanup containment.
+            Find coastal areas where floating ocean plastic will gather, and plan cleanup response.
           </p>
         </div>
 
@@ -47,7 +47,7 @@ export const HotspotsPage: React.FC = () => {
             }`}
           >
             <ShieldCheck className="w-4 h-4" />
-            <span>{dispatchLogged ? 'INTERCEPT PLAN ACTIVE ✓' : 'CREATE CONTAINMENT PLAN'}</span>
+            <span>{dispatchLogged ? 'CLEANUP PLAN ACTIVE ✓' : 'CREATE CLEANUP PLAN'}</span>
           </button>
         </div>
       </div>
@@ -61,7 +61,7 @@ export const HotspotsPage: React.FC = () => {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-black text-amber-400 uppercase tracking-widest">
-                TARGET ACCUMULATION ZONE
+                HOTSPOT ACCUMULATION ZONE
               </span>
               <span className="text-slate-500">•</span>
               <span className="text-xs text-slate-300 font-medium">
