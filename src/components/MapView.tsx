@@ -5,7 +5,6 @@ import type { FeatureCollection } from 'geojson';
 import { ActiveLayers } from './LayerControl';
 import { TimelineStep, HotspotZone, VerificationCandidate, NavigationId } from '../types';
 import { DRIFT_TRAJECTORY_DATA, HOTSPOT_ZONES, VERIFICATION_CANDIDATES } from '../data/mockData';
-
 interface MapViewProps {
   layers: ActiveLayers;
   currentStep: TimelineStep;
@@ -85,7 +84,7 @@ export const MapView: React.FC<MapViewProps> = ({
     map.on('load', () => {
       isLoadedRef.current = true;
       initMapSourcesAndLayers();
-      updateMapDisplay();
+      updateLayerVisibility();
     });
 
     mapRef.current = map;
@@ -412,8 +411,8 @@ export const MapView: React.FC<MapViewProps> = ({
       ],
     };
 
-    if (!map.getSource('wind-vector-src')) {
-      map.addSource('wind-vector-src', { type: 'geojson', data: windVectorGeoJSON });
+    if (!map.getSource('drift-paths-src')) {
+      map.addSource('drift-paths-src', { type: 'geojson', data: driftPathsGeoJSON });
 
       // Add line layer for day 1
       map.addLayer({
@@ -566,13 +565,21 @@ export const MapView: React.FC<MapViewProps> = ({
         </div>
       `);
 
+      const debrisEl = document.createElement('div');
+      debrisEl.className = 'select-none cursor-pointer';
+      debrisEl.innerHTML = `
+  <div style="width: 22px; height: 22px; border: 2.5px solid #EF4444; background: rgba(10,15,29,0.9); border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 14px rgba(239,68,68,0.9);">
+    <span style="color: #EF4444; font-weight: 900; font-size: 14px;">✕</span>
+  </div>
+`;
       const debrisMarker = new maplibregl.Marker({ element: debrisEl })
         .setLngLat([75.8, 9.85])
         .setPopup(popup)
         .addTo(map);
 
-      markersRef.current.push(activeMarker);
-    }
+      markersRef.current.push(debrisMarker);
+
+    } // closes if (layers.predictedDrift)
 
     // --- 3. GEOGRAPHIC COASTAL CITY LABELS ---
     const cityLabels = [
@@ -604,6 +611,18 @@ export const MapView: React.FC<MapViewProps> = ({
     if (layers.accumulationHotspots) {
       HOTSPOT_ZONES.forEach((spot) => {
         const isSelected = selectedHotspotId === spot.id;
+
+        const colorMap: Record<string, string> = {
+          High: '#EF4444',
+          Medium: '#F97316',
+          Watch: '#10B981',
+          HIGH: '#EF4444',
+          MEDIUM: '#F97316',
+          WATCH: '#10B981',
+        };
+
+        const color = colorMap[spot.priority] || '#EF4444';
+
         const hotspotEl = document.createElement('div');
         hotspotEl.style.cursor = 'pointer';
         hotspotEl.innerHTML = `
@@ -669,15 +688,15 @@ export const MapView: React.FC<MapViewProps> = ({
     // --- 6. OCEAN CURRENTS & WIND VECTORS ---
     if (layers.oceanCurrents || layers.wind) {
       const vectorCoords = [
-        { lat: 9.7, lng: 75.4, angle: 135 },
-        { lat: 9.1, lng: 75.9, angle: 140 },
-        { lat: 8.5, lng: 76.4, angle: 130 },
-        { lat: 8.0, lng: 77.1, angle: 110 },
-        { lat: 8.2, lng: 78.1, angle: 60 },
-        { lat: 8.8, lng: 78.9, angle: 45 },
+        { lat: 9.7, lng: 75.4, angle: 135, speed: '0.42 m/s', dir: 'SE', name: 'Kerala Coastal Current', temp: '28.4°C', depth: 'Surface' },
+        { lat: 9.1, lng: 75.9, angle: 140, speed: '0.38 m/s', dir: 'SE', name: 'Southwest Coastal Flow', temp: '28.1°C', depth: 'Surface' },
+        { lat: 8.5, lng: 76.4, angle: 130, speed: '0.35 m/s', dir: 'SE', name: 'Trivandrum Current', temp: '27.9°C', depth: 'Surface' },
+        { lat: 8.0, lng: 77.1, angle: 110, speed: '0.31 m/s', dir: 'ESE', name: 'Kanyakumari Current', temp: '27.7°C', depth: 'Surface' },
+        { lat: 8.2, lng: 78.1, angle: 60, speed: '0.28 m/s', dir: 'NE', name: 'Gulf of Mannar Flow', temp: '28.0°C', depth: 'Surface' },
+        { lat: 8.8, lng: 78.9, angle: 45, speed: '0.25 m/s', dir: 'NE', name: 'Palk Strait Flow', temp: '28.2°C', depth: 'Surface' },
       ];
 
-      oceanCurrentNodes.forEach((node) => {
+      vectorCoords.forEach((node) => {
         const nodeEl = document.createElement('div');
         nodeEl.className = 'select-none cursor-pointer';
         nodeEl.innerHTML = `
@@ -704,7 +723,7 @@ export const MapView: React.FC<MapViewProps> = ({
           .setPopup(popup)
           .addTo(map);
 
-        markersRef.current.push(vectorMarker);
+        markersRef.current.push(marker);
       });
     }
   };
