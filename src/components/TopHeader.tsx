@@ -21,7 +21,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
     <motion.header 
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="h-[58px] bg-white/80 backdrop-blur-xl border-b border-slate-200/50 px-5 flex items-center justify-between sticky top-0 z-20 shadow-sm select-none"
+      className="h-[58px] bg-white/80 backdrop-blur-xl border-b border-slate-200/50 pl-16 lg:pl-5 pr-5 flex items-center justify-between sticky top-0 z-20 shadow-sm select-none"
     >
 
       {/* CENTER: Global Search Bar */}

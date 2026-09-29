@@ -47,7 +47,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 bg-slate-900/40 backdrop-blur-xs select-none">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-14 sm:pt-20 bg-slate-900/40 backdrop-blur-xs select-none px-3 sm:px-0">
       <div className="w-full max-w-xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in mx-4">
         {/* Input area */}
         <div className="p-4 border-b border-slate-200 flex items-center gap-3">

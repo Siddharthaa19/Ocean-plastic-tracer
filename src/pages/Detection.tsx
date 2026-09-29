@@ -111,7 +111,7 @@ export const DetectionPage: React.FC = () => {
           </div>
 
           {/* Large Satellite Image Container */}
-          <div className="relative rounded-2xl overflow-hidden h-[460px] sm:h-[520px] bg-slate-950 border border-slate-300/80 shadow-inner group select-none">
+          <div className="relative rounded-2xl overflow-hidden h-[260px] sm:h-[380px] lg:h-[460px] bg-slate-950 border border-slate-300/80 shadow-inner group select-none">
             <img
               src="/floating_marine_plastic_debris.jpg"
               alt="Floating Marine Debris Satellite Observation"

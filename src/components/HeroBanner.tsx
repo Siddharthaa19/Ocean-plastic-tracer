@@ -10,7 +10,7 @@ interface HeroBannerProps {
 
 export const HeroBanner: React.FC<HeroBannerProps> = ({ onNavigate, onExploreMap }) => {
   return (
-    <div className="relative w-full rounded-2xl bg-gradient-to-r from-white via-[#F5F9FC] to-[#EAF8FA]/70 border border-slate-200/80 p-6 md:p-8 shadow-sm overflow-hidden">
+    <div className="relative w-full rounded-2xl bg-gradient-to-r from-white via-[#F5F9FC] to-[#EAF8FA]/70 border border-slate-200/80 p-5 md:p-8 shadow-sm overflow-hidden">
       {/* Background Ocean Ripple Pattern */}
       <div className="absolute -right-20 -top-20 w-96 h-96 bg-[#24C6C5]/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute right-1/3 -bottom-20 w-80 h-80 bg-[#0878D1]/10 rounded-full blur-2xl pointer-events-none" />

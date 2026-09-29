@@ -149,7 +149,7 @@ export const DriftForecastPage: React.FC = () => {
               </div>
             </div>
 
-            <MapView layers={layers} currentStep={currentStep} className={isMapFullscreen ? "flex-1 w-full h-full" : "h-[480px]"} />
+            <MapView layers={layers} currentStep={currentStep} className={isMapFullscreen ? "flex-1 w-full h-full" : "h-[300px] sm:h-[400px] lg:h-[480px]"} />
             <div className="absolute top-16 left-7 z-[400] hidden sm:block">
               <LayerControl
                 layers={layers}

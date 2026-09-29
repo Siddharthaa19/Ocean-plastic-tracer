@@ -85,17 +85,17 @@ export const OverviewPage: React.FC<OverviewProps> = ({ onNavigate }) => {
                 <h3 className="text-sm font-extrabold text-[#071A33] uppercase tracking-wider">
                   MARINE DEBRIS MAP
                 </h3>
-                <span className="text-slate-300">•</span>
-                <span className="text-xs text-slate-500 font-semibold">
+                <span className="hidden sm:inline text-slate-300">•</span>
+                <span className="hidden sm:inline text-xs text-slate-500 font-semibold">
                   Kerala Coast · Lat 9.98°N, Lng 75.95°E
                 </span>
               </div>
 
               {/* Quick layer pills */}
-              <div className="flex items-center gap-1.5 text-[11px] font-bold">
+              <div className="flex items-center gap-1.5 text-[11px] font-bold flex-wrap">
                 <button
                   onClick={() => setIsMapFullscreen(!isMapFullscreen)}
-                  className="p-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer mr-2 flex items-center justify-center"
+                  className="p-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer mr-1 flex items-center justify-center"
                   title="Toggle Fullscreen"
                 >
                   {isMapFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
@@ -114,7 +114,7 @@ export const OverviewPage: React.FC<OverviewProps> = ({ onNavigate }) => {
                 </button>
                 <button
                   onClick={() => onNavigate('hotspots')}
-                  className="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#E35D5D] hover:text-white transition-colors cursor-pointer"
+                  className="hidden sm:inline-flex px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 hover:bg-[#E35D5D] hover:text-white transition-colors cursor-pointer"
                 >
                   Hotspots
                 </button>
@@ -132,7 +132,7 @@ export const OverviewPage: React.FC<OverviewProps> = ({ onNavigate }) => {
                   <Minimize className="w-5 h-5" />
                 </button>
               )}
-              <MapView layers={layers} currentStep={timelineStep} className={isMapFullscreen ? "flex-1 w-full h-full" : "h-[460px] sm:h-[500px]"} />
+              <MapView layers={layers} currentStep={timelineStep} className={isMapFullscreen ? "flex-1 w-full h-full" : "h-[320px] sm:h-[420px] lg:h-[460px]"} />
 
               {/* Floating Layer Control Card */}
               <div className="absolute top-3 left-3 z-[400] hidden sm:block">

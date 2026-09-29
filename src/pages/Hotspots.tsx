@@ -133,7 +133,7 @@ export const HotspotsPage: React.FC = () => {
             currentStep="24H"
             selectedHotspotId={selectedHotspot.id}
             onSelectHotspot={setSelectedHotspot}
-            className={isMapFullscreen ? "flex-1 w-full h-full" : "h-[520px]"}
+            className={isMapFullscreen ? "flex-1 w-full h-full" : "h-[300px] sm:h-[420px] lg:h-[520px]"}
           />
 
           <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">

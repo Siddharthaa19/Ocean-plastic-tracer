@@ -47,7 +47,7 @@ export const FieldVerificationPage: React.FC = () => {
             layers={layers}
             currentStep="NOW"
             onSelectVerification={setSelectedCand}
-            className={isMapFullscreen ? "flex-1 w-full h-full" : "h-[500px]"}
+            className={isMapFullscreen ? "flex-1 w-full h-full" : "h-[300px] sm:h-[420px] lg:h-[500px]"}
           />
         </div>
 

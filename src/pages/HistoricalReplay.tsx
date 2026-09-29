@@ -251,7 +251,7 @@ export const HistoricalReplayPage: React.FC = () => {
           <History className="w-3.5 h-3.5" />
           HISTORICAL REPLAY
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#071A33] tracking-tight">
+        <h1 className="text-xl sm:text-3xl font-extrabold text-[#071A33] tracking-tight leading-tight">
           WHAT HAPPENED DURING A PREVIOUS EVENT?
         </h1>
         <p className="text-sm text-slate-500 font-normal mt-0.5">
@@ -321,7 +321,7 @@ export const HistoricalReplayPage: React.FC = () => {
               currentStep="48H"
               showIncidentOnly={currentStage.showIncidentOnly}
               showSatelliteOverlay={currentStage.showSatelliteOverlay}
-              className={isMapFullscreen ? "flex-1 w-full h-full" : "h-[460px] sm:h-[520px]"}
+              className={isMapFullscreen ? "flex-1 w-full h-full" : "h-[280px] sm:h-[400px] lg:h-[520px]"}
             />
 
             {/* Stage-Specific Map Legend Overlay */}
