@@ -21,11 +21,12 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
     <motion.header 
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="h-[58px] bg-white/80 backdrop-blur-xl border-b border-slate-200/50 pl-16 lg:pl-5 pr-5 flex items-center justify-between sticky top-0 z-20 shadow-sm select-none"
+      className="h-[58px] bg-white/80 backdrop-blur-xl border-b border-slate-200/50 pl-16 lg:pl-5 pr-3 sm:pr-5 flex items-center gap-2 sticky top-0 z-20 shadow-sm select-none"
     >
 
-      {/* CENTER: Global Search Bar */}
-      <div className="flex-1 max-w-md mx-6">
+      {/* CENTER: Global Search Bar — hidden as text on mobile, shows icon button instead */}
+      {/* Desktop search bar */}
+      <div className="hidden sm:flex flex-1 max-w-md mx-4 lg:mx-6">
         <button
           onClick={onOpenSearch}
           className="w-full flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-slate-100/80 hover:bg-slate-100 border border-slate-200/80 text-slate-500 text-xs transition-all group cursor-pointer"
@@ -34,21 +35,33 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
             <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#0878D1] transition-colors" />
             <span className="text-slate-500 font-medium">Search locations, detections, events...</span>
           </div>
-          <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-semibold text-slate-400 bg-white rounded border border-slate-200 shadow-2xs">
+          <kbd className="hidden lg:inline-block px-1.5 py-0.5 text-[10px] font-semibold text-slate-400 bg-white rounded border border-slate-200 shadow-2xs">
             ⌘K
           </kbd>
         </button>
       </div>
 
+      {/* Mobile: search icon button only */}
+      <button
+        onClick={onOpenSearch}
+        className="sm:hidden p-2 rounded-xl text-slate-500 hover:text-[#0878D1] hover:bg-slate-100 transition-colors cursor-pointer"
+        aria-label="Search"
+      >
+        <Search className="w-5 h-5" />
+      </button>
+
+      {/* Spacer to push right items to the right on mobile */}
+      <div className="flex-1 sm:hidden" />
+
       {/* RIGHT: Assistant, Notifications & User */}
-      <div className="flex items-center gap-3">
-        {/* Assistant CTA Button */}
+      <div className="flex items-center gap-1.5 sm:gap-3">
+        {/* Assistant CTA Button — shortened on mobile */}
         <button
           onClick={onOpenAIAssistant}
-          className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#0878D1] to-[#168BE8] text-white text-xs font-bold shadow-sm shadow-[#0878D1]/20 hover:shadow-md transition-all cursor-pointer transform active:scale-95"
+          className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#0878D1] to-[#168BE8] text-white text-xs font-bold shadow-sm shadow-[#0878D1]/20 hover:shadow-md transition-all cursor-pointer transform active:scale-95"
         >
           <Bot className="w-4 h-4 text-cyan-200 animate-bounce" />
-          <span>Assistant</span>
+          <span className="hidden sm:inline">Assistant</span>
         </button>
 
         {/* Notification Bell */}
