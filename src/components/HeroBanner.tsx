@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, Compass, MapPin } from 'lucide-react';
 import { NavigationId } from '../types';
+import { motion } from 'framer-motion';
 
 interface HeroBannerProps {
   onNavigate: (id: NavigationId) => void;
@@ -18,52 +19,76 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onNavigate, onExploreMap
         {/* LEFT COLUMN: Main Typography & CTAs */}
         <div className="lg:col-span-7">
           {/* Hero Heading */}
-          <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-[#071A33] tracking-tight leading-[1.15] mb-4">
+          <motion.h1 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.5 }}
+            className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-[#071A33] tracking-tight leading-[1.15] mb-4"
+          >
             See where plastic is.{' '}
             <span className="block text-[#0878D1]">Predict where it goes.</span>
-          </h1>
+          </motion.h1>
 
           {/* Subtitle */}
-          <p className="text-slate-600 text-sm sm:text-base font-normal leading-relaxed max-w-xl mb-6">
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="text-slate-600 text-sm sm:text-base font-normal leading-relaxed max-w-xl mb-6"
+          >
             Track floating marine debris, forecast its movement, and identify where teams should check first.
-          </p>
+          </motion.p>
 
           {/* Action Buttons */}
-          <div className="flex flex-wrap items-center gap-3">
-            <button
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="flex flex-wrap items-center gap-3"
+          >
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={onExploreMap}
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#0878D1] hover:bg-[#0766B3] text-white text-xs sm:text-sm font-bold shadow-md shadow-[#0878D1]/25 hover:shadow-lg transition-all transform active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#0878D1] hover:bg-[#0766B3] text-white text-xs sm:text-sm font-bold shadow-md shadow-[#0878D1]/25 hover:shadow-lg transition-colors cursor-pointer"
             >
               <span>Explore Map</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => onNavigate('hotspots')}
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-slate-50 text-[#071A33] border border-slate-300 text-xs sm:text-sm font-bold shadow-xs hover:border-slate-400 transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-slate-50 text-[#071A33] border border-slate-300 text-xs sm:text-sm font-bold shadow-xs hover:border-slate-400 transition-colors cursor-pointer"
             >
               <span>View Hotspots</span>
               <ArrowRight className="w-4 h-4 text-slate-400" />
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </div>
 
         {/* RIGHT COLUMN: Realistic Marine Imagery */}
-        <div className="lg:col-span-5 relative">
-          <div className="relative rounded-2xl overflow-hidden shadow-lg border border-slate-200/80 group">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
+          className="lg:col-span-5 relative"
+        >
+          <div className="relative rounded-2xl overflow-hidden shadow-xl shadow-[#0878D1]/10 border border-slate-200/80 group">
             <img
               src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=800&q=80"
               alt="Ocean Marine Monitoring View"
               className="w-full h-48 sm:h-56 lg:h-64 object-cover transform group-hover:scale-105 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#062B5C]/70 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#062B5C]/80 via-transparent to-transparent" />
 
             <div className="absolute bottom-3 left-4 text-white text-xs font-semibold flex items-center gap-2">
               <MapPin className="w-4 h-4 text-[#24C6C5]" />
               <span>Sentinel-2 Satellite Pass · Kerala Coast</span>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

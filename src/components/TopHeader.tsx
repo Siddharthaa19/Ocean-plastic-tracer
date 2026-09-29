@@ -4,6 +4,7 @@ import {
   Bot,
   Bell,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface TopHeaderProps {
   onOpenSearch: () => void;
@@ -17,7 +18,11 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
   hasUnreadNotification = true,
 }) => {
   return (
-    <header className="h-[58px] bg-white border-b border-slate-200/80 px-5 flex items-center justify-between sticky top-0 z-20 shadow-xs select-none">
+    <motion.header 
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="h-[58px] bg-white/80 backdrop-blur-xl border-b border-slate-200/50 px-5 flex items-center justify-between sticky top-0 z-20 shadow-sm select-none"
+    >
 
       {/* CENTER: Global Search Bar */}
       <div className="flex-1 max-w-md mx-6">
@@ -59,6 +64,6 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
           K
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 };

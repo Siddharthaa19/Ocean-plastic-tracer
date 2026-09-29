@@ -4,13 +4,8 @@ export type NavigationId =
   | 'drift'
   | 'hotspots'
   | 'verification'
-  | 'cleanup'
-  | 'satellite-scenes'
-  | 'ocean-conditions'
-  | 'model-confidence'
   | 'historical'
-  | 'settings'
-  | 'landing';
+  | 'settings';
 
 export type TimelineStep = 'NOW' | '12H' | '24H' | '48H' | '72H';
 

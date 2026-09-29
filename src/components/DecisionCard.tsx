@@ -8,6 +8,7 @@ import {
   Maximize2,
   Zap,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { DebrisDetection } from '../types';
 
 interface DecisionCardProps {
@@ -122,21 +123,24 @@ export const DecisionCard: React.FC<DecisionCardProps> = ({
 
           {/* Buttons & Rationale Link */}
           <div className="flex flex-wrap items-center gap-4 pt-1">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={onReviewDetection}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#18B77A] hover:bg-[#15A06B] text-white text-xs sm:text-sm font-bold shadow-md shadow-[#18B77A]/25 transition-all cursor-pointer"
             >
               <span>Review Detection</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
+              whileHover={{ x: 5 }}
               onClick={onOpenWhyDecision}
               className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0878D1] hover:text-[#065A9E] underline underline-offset-4 cursor-pointer transition-colors"
             >
               <HelpCircle className="w-3.5 h-3.5" />
               <span>Why this decision? (View Rationale)</span>
-            </button>
+            </motion.button>
           </div>
         </div>
 

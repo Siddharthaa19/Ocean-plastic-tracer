@@ -3,13 +3,14 @@ import { MapView } from '../components/MapView';
 import { ActiveLayers } from '../components/LayerControl';
 import { VERIFICATION_CANDIDATES } from '../data/mockData';
 import { VerificationCandidate } from '../types';
-import { Target, CheckCircle2, PlusCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { Target, CheckCircle2, PlusCircle, ChevronDown, ChevronUp, Maximize, Minimize } from 'lucide-react';
 
 export const FieldVerificationPage: React.FC = () => {
   const [candidates] = useState(VERIFICATION_CANDIDATES);
   const [selectedCand, setSelectedCand] = useState<VerificationCandidate>(VERIFICATION_CANDIDATES[0]);
   const [showModal, setShowModal] = useState(false);
   const [showDataDetails, setShowDataDetails] = useState(false);
+  const [isMapFullscreen, setIsMapFullscreen] = useState(false);
 
   const layers: ActiveLayers = {
     aiDetection: true,
@@ -34,12 +35,19 @@ export const FieldVerificationPage: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left 7 Cols: Map View */}
-        <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm">
+        <div className={isMapFullscreen ? "fixed inset-4 z-[9999] rounded-2xl overflow-hidden shadow-2xl bg-slate-950 flex flex-col p-4" : "lg:col-span-7 bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm relative flex flex-col"}>
+          <button
+            onClick={() => setIsMapFullscreen(!isMapFullscreen)}
+            className="absolute top-6 right-6 z-[400] p-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer flex items-center justify-center shadow-md"
+            title="Toggle Fullscreen"
+          >
+            {isMapFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+          </button>
           <MapView
             layers={layers}
             currentStep="NOW"
             onSelectVerification={setSelectedCand}
-            className="h-[500px]"
+            className={isMapFullscreen ? "flex-1 w-full h-full" : "h-[500px]"}
           />
         </div>
 

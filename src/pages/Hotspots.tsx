@@ -3,11 +3,12 @@ import { MapView } from '../components/MapView';
 import { ActiveLayers } from '../components/LayerControl';
 import { HOTSPOT_ZONES } from '../data/mockData';
 import { HotspotZone } from '../types';
-import { Flame, MapPin, ShieldCheck, AlertTriangle, Anchor, Truck, CheckCircle2, FileText, ArrowRight } from 'lucide-react';
+import { Flame, MapPin, ShieldCheck, AlertTriangle, Anchor, Truck, CheckCircle2, FileText, ArrowRight, Maximize, Minimize } from 'lucide-react';
 
 export const HotspotsPage: React.FC = () => {
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotZone>(HOTSPOT_ZONES[0]);
   const [dispatchLogged, setDispatchLogged] = useState(false);
+  const [isMapFullscreen, setIsMapFullscreen] = useState(false);
 
   // Hotspot focused map layers: Drift trajectory OFF, Hotspots ON
   const layers: ActiveLayers = {
@@ -105,7 +106,7 @@ export const HotspotsPage: React.FC = () => {
       {/* Main Content Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left 7 Cols: Map View */}
-        <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm space-y-3">
+        <div className={isMapFullscreen ? "fixed inset-4 z-[9999] rounded-2xl overflow-hidden shadow-2xl bg-slate-950 flex flex-col p-4" : "lg:col-span-7 bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm space-y-3"}>
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
             <div className="flex items-center gap-2">
               <Flame className="w-4 h-4 text-amber-500" />
@@ -113,9 +114,18 @@ export const HotspotsPage: React.FC = () => {
                 COASTAL ACCUMULATION TARGET MAP
               </span>
             </div>
-            <span className="text-[11px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
-              Focus: Zone 0{selectedHotspot.rank} ({selectedHotspot.name})
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="text-[11px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                Focus: Zone 0{selectedHotspot.rank} ({selectedHotspot.name})
+              </span>
+              <button
+                onClick={() => setIsMapFullscreen(!isMapFullscreen)}
+                className="p-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer flex items-center justify-center"
+                title="Toggle Fullscreen"
+              >
+                {isMapFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
 
           <MapView
@@ -123,7 +133,7 @@ export const HotspotsPage: React.FC = () => {
             currentStep="24H"
             selectedHotspotId={selectedHotspot.id}
             onSelectHotspot={setSelectedHotspot}
-            className="h-[520px]"
+            className={isMapFullscreen ? "flex-1 w-full h-full" : "h-[520px]"}
           />
 
           <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">

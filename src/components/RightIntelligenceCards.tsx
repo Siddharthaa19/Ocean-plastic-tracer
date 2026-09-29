@@ -6,6 +6,7 @@ import {
   ArrowRight,
   Radio,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { NavigationId } from '../types';
 import { HOTSPOT_ZONES } from '../data/mockData';
 
@@ -14,10 +15,17 @@ interface RightIntelligenceCardsProps {
 }
 
 export const RightIntelligenceCards: React.FC<RightIntelligenceCardsProps> = ({ onNavigate }) => {
+  const itemVariant = { hidden: { opacity: 0, x: 20 }, visible: { opacity: 1, x: 0 } };
+  
   return (
-    <div className="space-y-4 select-none">
+    <motion.div 
+      initial="hidden" 
+      animate="visible"
+      variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+      className="space-y-4 select-none"
+    >
       {/* CARD 1: DETECTION CONFIDENCE */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm hover:shadow-md transition-shadow">
+      <motion.div variants={itemVariant} className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm hover:shadow-md transition-shadow">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
             <Radio className="w-3.5 h-3.5 text-[#0878D1]" />
@@ -43,10 +51,10 @@ export const RightIntelligenceCards: React.FC<RightIntelligenceCardsProps> = ({ 
             <span className="font-semibold text-slate-700">27 Sep 2026 · 09:20 UTC</span>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* CARD 2: DRIFT FORECAST */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm hover:shadow-md transition-shadow">
+      <motion.div variants={itemVariant} className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm hover:shadow-md transition-shadow">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
             <Compass className="w-3.5 h-3.5 text-[#168BE8]" />
@@ -75,10 +83,10 @@ export const RightIntelligenceCards: React.FC<RightIntelligenceCardsProps> = ({ 
         <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mt-1">
           <div className="bg-[#168BE8] h-full w-[82%] rounded-full" />
         </div>
-      </div>
+      </motion.div>
 
       {/* CARD 3: HOTSPOT RISK */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm hover:shadow-md transition-shadow">
+      <motion.div variants={itemVariant} className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm hover:shadow-md transition-shadow">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
             <Flame className="w-3.5 h-3.5 text-[#E35D5D]" />
@@ -119,10 +127,10 @@ export const RightIntelligenceCards: React.FC<RightIntelligenceCardsProps> = ({ 
         >
           View All Hotspots →
         </button>
-      </div>
+      </motion.div>
 
       {/* CARD 4: BEST PLACE TO CHECK (DIFFERENTIATOR) */}
-      <div className="bg-gradient-to-br from-[#062B5C] to-[#0A3D7F] rounded-2xl p-4 text-white shadow-lg relative overflow-hidden group">
+      <motion.div variants={itemVariant} className="bg-gradient-to-br from-[#062B5C] to-[#0A3D7F] rounded-2xl p-4 text-white shadow-lg relative overflow-hidden group">
         <div className="absolute right-0 top-0 w-32 h-32 bg-[#24C6C5]/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="flex items-center justify-between mb-3">
@@ -158,7 +166,7 @@ export const RightIntelligenceCards: React.FC<RightIntelligenceCardsProps> = ({ 
           <span>Start Verification</span>
           <ArrowRight className="w-4 h-4" />
         </button>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };

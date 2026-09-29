@@ -3,17 +3,14 @@ import { Sidebar } from './components/Sidebar';
 import { TopHeader } from './components/TopHeader';
 import { GlobalSearchModal } from './components/GlobalSearchModal';
 import { AIAssistantDrawer } from './components/AIAssistantDrawer';
+import { motion, AnimatePresence } from 'framer-motion';
 
-import { LandingPage } from './pages/Landing';
 import { OverviewPage } from './pages/Overview';
 import { DetectionPage } from './pages/Detection';
 import { DriftForecastPage } from './pages/DriftForecast';
 import { HotspotsPage } from './pages/Hotspots';
 import { FieldVerificationPage } from './pages/FieldVerification';
-import { CleanupPriorityPage } from './pages/CleanupPriority';
 import { HistoricalReplayPage } from './pages/HistoricalReplay';
-import { SatelliteScenesPage } from './pages/SatelliteScenes';
-import { ModelConfidencePage } from './pages/ModelConfidence';
 import { SettingsPage } from './pages/Settings';
 
 import { NavigationId } from './types';
@@ -28,14 +25,7 @@ export function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Render Landing Page if currentNav === 'landing'
-  if (currentNav === 'landing') {
-    return (
-      <LandingPage
-        onEnterApp={(targetNav) => handleNavigate(targetNav || 'overview')}
-      />
-    );
-  }
+
 
   const renderActivePage = () => {
     switch (currentNav) {
@@ -49,15 +39,8 @@ export function App() {
         return <HotspotsPage />;
       case 'verification':
         return <FieldVerificationPage />;
-      case 'cleanup':
-        return <CleanupPriorityPage />;
       case 'historical':
         return <HistoricalReplayPage />;
-      case 'satellite-scenes':
-        return <SatelliteScenesPage />;
-      case 'ocean-conditions':
-      case 'model-confidence':
-        return <ModelConfidencePage />;
       case 'settings':
         return <SettingsPage />;
       default:
@@ -71,7 +54,6 @@ export function App() {
       <Sidebar
         currentNav={currentNav}
         onNavigate={handleNavigate}
-        onOpenLanding={() => handleNavigate('landing')}
       />
 
       {/* 2. Main Workspace Layout */}
@@ -83,8 +65,19 @@ export function App() {
         />
 
         {/* Dynamic Main Content Container */}
-        <main className="flex-1 overflow-y-auto">
-          {renderActivePage()}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden relative">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentNav}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="min-h-full"
+            >
+              {renderActivePage()}
+            </motion.div>
+          </AnimatePresence>
         </main>
       </div>
 

@@ -9,7 +9,8 @@ import { AnalyticsSection } from '../components/AnalyticsSection';
 import { AIExplanationDrawer } from '../components/AIExplanationDrawer';
 import { PRIMARY_DETECTION, DEMO_DISCLAIMER_TEXT } from '../data/mockData';
 import { NavigationId, TimelineStep } from '../types';
-import { MapPin, Info } from 'lucide-react';
+import { MapPin, Info, Maximize, Minimize } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface OverviewProps {
   onNavigate: (id: NavigationId) => void;
@@ -18,6 +19,7 @@ interface OverviewProps {
 export const OverviewPage: React.FC<OverviewProps> = ({ onNavigate }) => {
   const [timelineStep, setTimelineStep] = useState<TimelineStep>('NOW');
   const [isWhyDrawerOpen, setIsWhyDrawerOpen] = useState(false);
+  const [isMapFullscreen, setIsMapFullscreen] = useState(false);
   const [layers, setLayers] = useState<ActiveLayers>({
     aiDetection: true,
     predictedDrift: true,
@@ -32,29 +34,44 @@ export const OverviewPage: React.FC<OverviewProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="p-4 sm:p-6 max-w-[1600px] mx-auto select-none space-y-6">
+    <motion.div 
+      initial="hidden" 
+      animate="visible" 
+      variants={{
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { staggerChildren: 0.1 }
+        }
+      }}
+      className="p-4 sm:p-6 max-w-[1600px] mx-auto select-none space-y-6"
+    >
       {/* Overview Page Title & One-line Subtitle */}
-      <div>
+      <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-[#071A33] tracking-tight">
           Marine Debris Situation Overview
         </h1>
         <p className="text-sm text-slate-500 font-normal">
           Current marine debris situation, predicted movement, and recommended field actions.
         </p>
-      </div>
+      </motion.div>
 
       {/* 1. Large Maritime Hero Banner */}
-      <HeroBanner onNavigate={onNavigate} />
+      <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+        <HeroBanner onNavigate={onNavigate} />
+      </motion.div>
 
       {/* 2. Primary Recommended Action Card */}
-      <DecisionCard
-        detection={PRIMARY_DETECTION}
-        onReviewDetection={() => onNavigate('detection')}
-        onOpenWhyDecision={() => setIsWhyDrawerOpen(true)}
-      />
+      <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+        <DecisionCard
+          detection={PRIMARY_DETECTION}
+          onReviewDetection={() => onNavigate('detection')}
+          onOpenWhyDecision={() => setIsWhyDrawerOpen(true)}
+        />
+      </motion.div>
 
       {/* 3. Main Map & Right Intelligence Cards Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* LEFT 8 COLS: Integrated Map Card + Drift Timeline */}
         <div className="lg:col-span-8 space-y-4">
           <div className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm">
@@ -73,6 +90,13 @@ export const OverviewPage: React.FC<OverviewProps> = ({ onNavigate }) => {
 
               {/* Quick layer pills */}
               <div className="flex items-center gap-1.5 text-[11px] font-bold">
+                <button
+                  onClick={() => setIsMapFullscreen(!isMapFullscreen)}
+                  className="p-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer mr-2 flex items-center justify-center"
+                  title="Toggle Fullscreen"
+                >
+                  {isMapFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+                </button>
                 <button
                   onClick={() => onNavigate('detection')}
                   className="px-2.5 py-1 rounded-lg bg-[#EAF8FA] text-[#0878D1] hover:bg-[#0878D1] hover:text-white transition-colors cursor-pointer"
@@ -95,8 +119,17 @@ export const OverviewPage: React.FC<OverviewProps> = ({ onNavigate }) => {
             </div>
 
             {/* Map Canvas with Floating Layer Control Overlay */}
-            <div className="relative rounded-2xl overflow-hidden">
-              <MapView layers={layers} currentStep={timelineStep} className="h-[460px] sm:h-[500px]" />
+            <div className={isMapFullscreen ? "fixed inset-4 z-[9999] rounded-2xl overflow-hidden shadow-2xl bg-slate-950 flex flex-col" : "relative rounded-2xl overflow-hidden"}>
+              {isMapFullscreen && (
+                <button 
+                  onClick={() => setIsMapFullscreen(false)}
+                  className="absolute top-4 right-4 z-[10000] p-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 shadow-xl cursor-pointer"
+                  title="Exit Fullscreen"
+                >
+                  <Minimize className="w-5 h-5" />
+                </button>
+              )}
+              <MapView layers={layers} currentStep={timelineStep} className={isMapFullscreen ? "flex-1 w-full h-full" : "h-[460px] sm:h-[500px]"} />
 
               {/* Floating Layer Control Card */}
               <div className="absolute top-3 left-3 z-[400] hidden sm:block">
@@ -113,10 +146,12 @@ export const OverviewPage: React.FC<OverviewProps> = ({ onNavigate }) => {
         <div className="lg:col-span-4">
           <RightIntelligenceCards onNavigate={onNavigate} />
         </div>
-      </div>
+      </motion.div>
 
       {/* 4. Bottom Analytics Section */}
-      <AnalyticsSection />
+      <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+        <AnalyticsSection />
+      </motion.div>
 
       {/* Explanation Drawer Modal */}
       <AIExplanationDrawer
@@ -124,6 +159,6 @@ export const OverviewPage: React.FC<OverviewProps> = ({ onNavigate }) => {
         onClose={() => setIsWhyDrawerOpen(false)}
         detection={PRIMARY_DETECTION}
       />
-    </div>
+    </motion.div>
   );
 };

@@ -11,7 +11,7 @@ import {
   COASTAL_CITIES,
   REGIONAL_LABELS,
 } from '../data/debrisHeatmapData';
-import { Flame, Sliders, Sparkles } from 'lucide-react';
+import { Flame, Sliders, Sparkles, ChevronUp, ChevronDown, Info } from 'lucide-react';
 
 interface MapViewProps {
   layers: ActiveLayers;
@@ -46,6 +46,7 @@ export const MapView: React.FC<MapViewProps> = ({
   const [heatmapMode, setHeatmapMode] = useState<HeatmapMode>('satellite-thermal');
   const [heatIntensity, setHeatIntensity] = useState<number>(1.2);
   const [isPulsing, setIsPulsing] = useState<boolean>(true);
+  const [isLegendOpen, setIsLegendOpen] = useState<boolean>(false);
 
   // Initialize MapLibre GL
   useEffect(() => {
@@ -809,24 +810,6 @@ export const MapView: React.FC<MapViewProps> = ({
       {/* MAP CANVAS */}
       <div ref={mapContainerRef} className="w-full h-full bg-slate-950" />
 
-      {/* TOP-LEFT HEADER BANNER (Matching reference image) */}
-      <div className="absolute top-4 left-4 z-10 bg-slate-950/90 backdrop-blur-md border border-slate-700/80 text-white rounded-xl p-3.5 shadow-2xl max-w-sm pointer-events-none select-none">
-        <div className="flex items-center justify-between gap-3">
-          <h2 className="text-sm sm:text-base font-extrabold tracking-tight text-white flex items-center gap-1.5">
-            <span>Potential</span>
-            <span className="text-[#A78BFA] drop-shadow-[0_0_8px_rgba(167,139,250,0.5)]">Risk</span>
-            <span>&amp;</span>
-            <span className="text-cyan-400">Drift Zones</span>
-          </h2>
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800/90 text-slate-300 border border-slate-700 whitespace-nowrap">
-            Next 5 Days (Illustrative)
-          </span>
-        </div>
-        <p className="text-xs font-semibold text-slate-300 mt-1 flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
-          MSC ELSA 3 Incident (Off Kerala)
-        </p>
-      </div>
 
       {/* TOP-RIGHT HEATMAP CONTROLLER BAR */}
       <div className="absolute top-4 right-14 z-10 hidden sm:flex items-center gap-2 bg-slate-950/85 backdrop-blur-md border border-slate-700/70 p-1.5 rounded-xl shadow-xl select-none">
@@ -894,12 +877,28 @@ export const MapView: React.FC<MapViewProps> = ({
       </div>
 
       {/* BOTTOM-LEFT SLICK REFERENCE LEGEND (Exact copy of reference image) */}
-      <div className="absolute bottom-4 left-4 z-10 bg-slate-950/95 backdrop-blur-md border border-slate-700/80 text-white rounded-xl p-3.5 shadow-2xl w-64 select-none">
-        <div className="space-y-3.5">
-          {/* DEBRIS CONCENTRATION SCALE */}
-          <div>
-            <div className="text-[10px] font-extrabold uppercase tracking-wider text-slate-300 mb-2 flex items-center justify-between">
-              <span>Debris Concentration</span>
+      <div className={`absolute bottom-4 left-4 z-10 bg-slate-950/95 backdrop-blur-md border border-slate-700/80 text-white shadow-2xl transition-all select-none ${isLegendOpen ? 'rounded-xl p-3.5 w-64' : 'rounded-xl p-2.5 w-auto cursor-pointer hover:bg-slate-900/95'}`} onClick={() => !isLegendOpen && setIsLegendOpen(true)}>
+        <div className={`flex items-center justify-between ${isLegendOpen ? 'mb-3 pb-2 border-b border-slate-800' : ''}`}>
+          {isLegendOpen ? (
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-white flex items-center gap-1.5"><Info className="w-3.5 h-3.5 text-cyan-400" /> MAP LEGEND</span>
+          ) : (
+            <div className="flex items-center gap-2" title="Open Map Legend">
+              <Info className="w-5 h-5 text-cyan-400" />
+            </div>
+          )}
+          {isLegendOpen && (
+            <button onClick={(e) => { e.stopPropagation(); setIsLegendOpen(false); }} className="text-slate-400 hover:text-white transition-colors cursor-pointer p-0.5 rounded-sm hover:bg-slate-800" title="Close Legend">
+              <ChevronDown className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
+        {isLegendOpen && (
+          <div className="space-y-3.5">
+            {/* DEBRIS CONCENTRATION SCALE */}
+            <div>
+              <div className="text-[10px] font-extrabold uppercase tracking-wider text-slate-300 mb-2 flex items-center justify-between">
+                <span>Debris Concentration</span>
               <span className="text-[9px] text-slate-400 font-normal lowercase">(from Satellite)</span>
             </div>
             <div className="space-y-1.5">
@@ -958,6 +957,7 @@ export const MapView: React.FC<MapViewProps> = ({
             </div>
           </div>
         </div>
+        )}
       </div>
 
       {/* BOTTOM-RIGHT SCALE BAR & NORTH ARROW (Matching reference image) */}

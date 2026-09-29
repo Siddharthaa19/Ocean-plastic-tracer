@@ -16,11 +16,14 @@ import {
   Activity,
   MapPin,
   TrendingUp,
+  Maximize,
+  Minimize,
 } from 'lucide-react';
 
 export const DriftForecastPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<TimelineStep>('48H');
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMapFullscreen, setIsMapFullscreen] = useState(false);
   const [layers, setLayers] = useState<ActiveLayers>({
     aiDetection: true,
     predictedDrift: true,
@@ -126,7 +129,7 @@ export const DriftForecastPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left 7 Cols: Map View & Scrubber */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm relative">
+          <div className={isMapFullscreen ? "fixed inset-4 z-[9999] rounded-2xl overflow-hidden shadow-2xl bg-slate-950 flex flex-col p-4" : "bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm relative"}>
             <div className="flex items-center justify-between pb-2 mb-3 border-b border-slate-100 text-xs">
               <div className="flex items-center gap-2">
                 <Compass className="w-4 h-4 text-[#0878D1]" />
@@ -134,11 +137,20 @@ export const DriftForecastPage: React.FC = () => {
                   DEBRIS MOVEMENT MAP
                 </span>
               </div>
-              <span className="text-[#0878D1] font-bold">Forecast Horizon: {currentStep}</span>
+              <div className="flex items-center gap-3">
+                <span className="text-[#0878D1] font-bold">Forecast Horizon: {currentStep}</span>
+                <button
+                  onClick={() => setIsMapFullscreen(!isMapFullscreen)}
+                  className="p-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer flex items-center justify-center"
+                  title="Toggle Fullscreen"
+                >
+                  {isMapFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
 
-            <MapView layers={layers} currentStep={currentStep} className="h-[480px]" />
-            <div className="absolute top-14 left-7 z-[400] hidden sm:block">
+            <MapView layers={layers} currentStep={currentStep} className={isMapFullscreen ? "flex-1 w-full h-full" : "h-[480px]"} />
+            <div className="absolute top-16 left-7 z-[400] hidden sm:block">
               <LayerControl
                 layers={layers}
                 onToggleLayer={(k) => setLayers((p) => ({ ...p, [k]: !p[k] }))}

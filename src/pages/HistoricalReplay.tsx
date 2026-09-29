@@ -11,6 +11,8 @@ import {
   Info,
   CheckCircle2,
   ArrowRight,
+  Maximize,
+  Minimize,
 } from 'lucide-react';
 
 interface StageData {
@@ -33,6 +35,7 @@ interface StageData {
 export const HistoricalReplayPage: React.FC = () => {
   const [activeStageIndex, setActiveStageIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMapFullscreen, setIsMapFullscreen] = useState(false);
 
   const stages: StageData[] = [
     {
@@ -304,14 +307,21 @@ export const HistoricalReplayPage: React.FC = () => {
       {/* 3. Main Replay Area (Map + Info Panel) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column: Map & Replay Controls */}
-        <div className="lg:col-span-8 space-y-3">
-          <div className="bg-white rounded-2xl border border-slate-200/90 p-3 shadow-sm relative">
+        <div className={isMapFullscreen ? "fixed inset-4 z-[9999] rounded-2xl overflow-hidden shadow-2xl bg-slate-950 flex flex-col p-4" : "lg:col-span-8 space-y-3"}>
+          <div className="bg-white rounded-2xl border border-slate-200/90 p-3 shadow-sm relative flex-1 flex flex-col">
+            <button
+              onClick={() => setIsMapFullscreen(!isMapFullscreen)}
+              className="absolute top-4 right-4 z-[400] p-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer flex items-center justify-center shadow-md"
+              title="Toggle Fullscreen"
+            >
+              {isMapFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+            </button>
             <MapView
               layers={currentStage.layers}
               currentStep="48H"
               showIncidentOnly={currentStage.showIncidentOnly}
               showSatelliteOverlay={currentStage.showSatelliteOverlay}
-              className="h-[460px] sm:h-[520px]"
+              className={isMapFullscreen ? "flex-1 w-full h-full" : "h-[460px] sm:h-[520px]"}
             />
 
             {/* Stage-Specific Map Legend Overlay */}
