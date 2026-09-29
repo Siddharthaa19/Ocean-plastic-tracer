@@ -58,7 +58,10 @@ export const OverviewPage: React.FC<OverviewProps> = ({ onNavigate }) => {
 
       {/* 1. Large Maritime Hero Banner */}
       <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
-        <HeroBanner onNavigate={onNavigate} />
+        <HeroBanner 
+          onNavigate={onNavigate} 
+          onExploreMap={() => document.getElementById('map-section')?.scrollIntoView({ behavior: 'smooth' })}
+        />
       </motion.div>
 
       {/* 2. Primary Recommended Action Card */}
@@ -71,7 +74,7 @@ export const OverviewPage: React.FC<OverviewProps> = ({ onNavigate }) => {
       </motion.div>
 
       {/* 3. Main Map & Right Intelligence Cards Section */}
-      <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <motion.div id="map-section" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start scroll-mt-24">
         {/* LEFT 8 COLS: Integrated Map Card + Drift Timeline */}
         <div className="lg:col-span-8 space-y-4">
           <div className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm">
